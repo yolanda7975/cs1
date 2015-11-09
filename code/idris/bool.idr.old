@@ -1,0 +1,88 @@
+module bool
+import pair
+
+data bool = true | false
+
+|||Exam proeblem #1. Verify names and correctness of unary Boolean functions
+
+id_bool: bool -> bool
+id_bool b = b
+
+constFalse: bool -> bool
+constFalse _ = false
+
+constTrue: bool -> bool
+constTrue _ = true
+
+not: bool -> bool
+not true = false
+not _ = true
+
+{-
+Exam Problem #2: There are "16" possible ways to fill in the result column
+ for a truth table for a binary Boolean function, and there are thus
+ exactly "16" such functions, and no more.
+-}
+
+|||Exam problem #3: Verify names and correctness of your binary Boolean functions
+|||#1 given a pair of bool values, (a, b), return true if both a and b are true, otherwise return false
+andp: pair bool bool -> bool
+andp (mkPair true true) = true
+andp _ = false
+
+|||#2 given a pair of bool values, (a, b), return false if both a and b are false, otherwise return true
+orp: pair bool bool -> bool
+orp (mkPair false false) = false
+orp _ = true
+
+|||#3 short for exclusive or, given a pair of bool values, (a, b), return true if exactly one of a or b is true, and false otherwise
+xorp: pair bool bool -> bool
+xorp (mkPair true false) = true
+xorp (mkPair false true) = true
+xorp _ = false
+
+|||#4 short for not and, given a pair of bool values, (a, b), return false if both a and b are true, and true otherwise
+nandp: pair bool bool -> bool
+nandp (mkPair a b) = not (andp (mkPair a b))
+
+|||Exam problem #4 (explicit), binary functions
+-- part a, pand functions
+pand: bool -> bool -> bool
+pand true = id_bool
+pand false = constFalse
+
+-- part b, por functions
+por: bool -> bool -> bool
+por true = constTrue
+por false = id_bool
+
+-- part c, pxor functions
+pxor: bool -> bool -> bool
+pxor true = not
+pxor false = id_bool
+
+-- part d, pnand functions
+pnand: bool -> bool -> bool
+pnand true = not
+pnand false = constTrue
+
+|||implicit, bianry functions
+and: bool -> bool -> bool
+and true true = true -- pattern matching on two arguments
+and _ _ = false
+-- Question: type (and true)?
+-- Answer: function bool -> bool
+
+uf: bool -> bool
+uf = (and true)
+-- uf true returns true and uf false returns false in REPL.
+
+or: bool -> bool -> bool
+or false false = false
+or _ _ = true
+
+--xor: bool -> bool -> bool
+--nand: bool -> bool -> bool
+
+-- partial evaluation means the application of a function thak takes several parameters
+-- to fewer parameters with a function that takes the remaining parameters as a reult

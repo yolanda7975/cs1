@@ -1,0 +1,49 @@
+October/9/2015
+
+associative property: 7+5-2(infix)  add 7 (sub 5 2)
+                                    sub (add 7 5) 2 <-prefix
+                      3+5*4  add 3 (mult 5 4)
+assco rule
+prec rule
+
+cons T (cons F (cons T (cons T nil)))
+     T    :: F   ::  T   ::  T ::nil ::-element on the right is one thing, associative
+
+October/12/2015
+projection function
+
+field override functions (" setters")
+setName' : Person' -> String -> Person'
+setName' (mkPerson' n a h g) n' = mkPerson' n' a h g
+     deconstructing
+setName: Person -> String -> Person --shortwrited
+setName p n = record {name = n} p  --record {name = n} is a function, record {fieldName = value} for field override
+
+setAge' : Person' -> Nat -> Person'
+setAge' (mkPerson' n a h g) a' = mkPerson' n a' h g
+setAge: Person -> Nat -> Person
+setAge p a = record {age = a} p
+
+setHeight' : Person' -> Nat -> Person'
+setHeight' (mkPerson' n a h g) h' = mkPerson' n a h' g
+setHeight : Person -> Nat -> Person
+setHeight p h  = record { height = h } p
+
+getAge: Person -> Nat -- projection functions ,takes record fields, age is type of Perso -> Nat
+getAge = age   -- record to fields
+
+:t age expecting age:Person -> Nat
+:t name expecting name:Person -> String
+:t gender expecting gender:Person -> bool
+
+October/16/2015
+[1,2,3,4,5]+[] = 15
+fancy+"0"[1,2,3,4,5] = 1+(fancy +[2,3,4,5])
+     f id h t     "id" -- think about group and field in abstract algebra
+                  = 1+ (2 +(fancy +[3,4,5]))
+                  ......
+                  = 1+2+3+4+(5 + (fancy + nil)) -->fancy + nil must be zero
+
+"hello_"++ "world" = "hello_world"
+fancy ++ ["hello","world", "!"]
+"hello" ++ (fancy ++ ["world","!"])

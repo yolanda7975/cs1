@@ -1,0 +1,72 @@
+module list_nat
+
+import nat
+import pair
+
+data list_nat = nil | cons nat list_nat
+
+lO:list_nat
+lO = nil
+
+l1:list_nat
+l1 = cons O nil -- or lO , they both represent a small list
+
+l2:list_nat
+l2 = (cons (S O) (cons (S(S O)) nil))
+
+l3:list_nat
+l3 = (cons (S O) (cons (S(S O)) (cons (S(S(S O))) nil)))
+
+-- the way the cons organized influences the orders of numbers like
+  -- 1,2,3 or 3,1,2 etc
+
+--length function
+length: list_nat -> nat
+length nil = O
+length (cons n l') = S (length l')
+
+{-
+lO matches first condition;
+ln: destructure the list, 1 for the head + lenght for the rest of
+small list (which is permutated until back to lO)
+example:l3
+length( cons (S O) (cons (S(S O)) (cons (S(S(S O))) nil)))
+S(length (cons (S(S O)) (cons (S(S(S O))) nil)))
+S (S (length (cons (S(S(S O))) nil)))
+S(S(S(length nil)))
+S(S(S(O)))
+-}
+
+--append function
+append: pair list_nat list_nat -> list_nat
+append (mkPair nil nil) = nil
+append (mkPair nil (cons n l)) = cons n l
+append (mkPair (cons m l) l') = cons m (append (mkPair l l'))
+
+--testing append function
+a1:list_nat
+a1 = append (mkPair nil nil) --expecting nil
+a2:list_nat
+a2 = append (mkPair nil l2)  --expecting cons (S O) (cons (S(S O)) nil)
+a3:list_nat
+a3 = append (mkPair l3 l3) --expecting cons (S O)(cons (S (S O) (cons (S (S (S O)))(cons (S O)(cons (S (S O)) (cons (S (S (S O))) nil)))))
+
+length: list a -> nat
+length nil = O
+length (cons n l') = S (length l')
+
+--lb2:nat
+--lb2 = length nil  nil here is not defined (people, nat, bool),repl will show error
+--lb1 false gives context
+--lb2 = length nil {a = nat},correct!
+
+--append function
+append: list a -> list a -> list a
+append nil l= l
+append (cons m l) l' = cons m (append l l')
+
+--lb1 : list Bool
+--lb1 = cons True (cons False nil)
+
+--length l3 = 3
+--length lb1 = 2

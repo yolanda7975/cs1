@@ -1,0 +1,175 @@
+{-
+Homework due Friday is at the bottom, from #5.
+-}
+
+module nat
+
+import bool
+import pair
+
+data nat = O | S nat
+
+
+-- zero
+z: nat
+z = O
+
+-- one
+o: nat
+o = S O
+
+-- two
+t: nat
+t = S (S O)
+
+-- three
+r: nat
+r = S t
+
+
+||| returns true if the argument is (represents) zero, otherwise false
+isZero: nat -> bool
+isZero O = true
+isZero _ = false
+
+-- HOMEWORK #7 Bind x to the result of applying isZero to r. Add your
+-- code below this comment.
+x: bool
+x = isZero r
+
+||| returns the successor of any given nat
+succ: nat -> nat
+succ n = S n
+
+-- HOMEWORK #8 Bind y to the result of applying succ to O. Add code here.
+y: nat
+y = succ O
+
+||| returns the predecessor of any given nat
+pred: nat -> nat
+pred O = O
+pred (S n) = n
+
+||| return true if the argument is even otherwise false
+evenb: nat -> bool
+evenb O = true
+evenb (S O) = false
+evenb (S (S n)) = evenb n
+
+|||return true if the argument is odd ow false
+oddb: nat -> bool
+oddb n = not (evenb n)
+
+-- HOMEWORK #9 Bind a, b, c, d, e respectively to the results of
+-- applying evenb to O, (S O), (S (S O)) r, and (S r),
+-- respectively. Add your code here.
+a: bool
+a = evenb O
+
+b: bool
+b = evenb (S O)
+
+c: bool
+c = evenb (S (S O))
+
+d: bool
+d = evenb r
+
+e: bool
+e = evenb (S r)
+
+addp: pair nat nat -> nat
+--addp (mkPair O O) = O
+--addp (mkPair n O) = n
+--addp (mkPair O n) = n
+--addp (mkPair m n) = addp (mkPair (succ m) (pred n))
+addp (mkPair O m) = m
+addp (mkPair (S n) m) = S (addp (mkPair n m))
+
+-- HOMEWORK 12 -- Use the REPL to verify that these tests return the
+-- expected results
+
+||| a test, expecting O
+h1: nat
+h1 = addp (mkPair O O)
+
+||| a test, expecting S (S O)
+h2: nat
+h2 = addp (mkPair O (S (S O)))
+
+||| a test, expecting (S O)
+h3: nat
+h3 = addp (mkPair (S O) O)
+
+||| a test, expecting (S (S (S (S (S O)))))
+h4: nat
+h4 = addp (mkPair (S (S O)) (S (S (S O))))
+
+-- Part 1:muplication
+{- (2)(One more than n)times m is
+that m are added (n+1) times
+
+-}
+||| given a pair of natural numbers, return its sum
+multp: pair nat nat -> nat
+multp (mkPair O m) = O
+multp (mkPair (S n) m) = addp (mkPair (multp (mkPair n m)) m)
+
+-- Part 2: factorial
+factp: nat -> nat
+factp O = (S O) --0!=1
+factp (S n) = multp (mkPair (S n) (factp (n)))
+
+--substraction
+subp: pair nat nat -> nat
+subp (mkPair O m) = O
+subp (mkPair n O) = n
+subp (mkPair (S n) (S m)) = subp (mkPair n m)
+
+
+--5:given a pair of natural numbers, (x, n), return the value of x raised to the nth power
+exp: pair nat nat -> nat
+exp (mkPair O m) = O
+exp (mkPair (S n) O) = S O
+exp (mkPair x (S n)) = multp (mkPair x (exp (mkPair x n)))
+
+--6: given a pair of natural numbers, (a, b), return true if a is less than or equal to b, otherwise return false
+lep: pair nat nat -> bool
+lep (mkPair O m) = true
+lep (mkPair (S n) O) = false
+lep (mkPair (S n) (S m)) = lep (mkPair n m)
+
+ -- 7:given a pair of natural numbers, (a, b), return true if a is equal to be, otherwise return false
+eqp: pair nat nat -> bool
+eqp (mkPair O O) = true
+eqp (mkPair O (S m)) = false
+eqp (mkPair (S n) O) = false
+eqp (mkPair (S n) (S m)) = eqp (mkPair n m)
+
+
+--8: given a pair of natural numbers, (a, b), return true if a is greater than b, otherwise return false
+gtp: pair nat nat -> bool
+gtp (mkPair O m) = false
+gtp (mkPair (S n) O) = true
+gtp (mkPair (S n) (S m)) = gtp (mkPair n m)
+
+--9:given a pair of natural numbers, (a, b), return true of a is greater than or equal to b
+gep: pair nat nat -> bool
+gep (mkPair m O) = true
+gep (mkPair O (S n)) =false
+gep (mkPair (S n) (S m)) = gep (mkPair n m)
+
+--10:given a pair of natural numbers, (a, b), return true if a is less than b
+ltp: pair nat nat -> bool
+ltp (mkPair m O) = false
+ltp (mkPair O (S n)) = true
+ltp (mkPair (S n) (S m)) = ltp (mkPair n m)
+
+--binary function
+add: nat -> nat -> nat
+add O m = m
+add (S n) m = S (add n m)
+
+pf: nat -> nat
+pf = add (S (S O))
+--pf (S(S(S O))) returns S(S(S(S(S O)))) in REPL.
